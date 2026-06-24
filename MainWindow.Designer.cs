@@ -28,22 +28,26 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			menuStrip1 = new MenuStrip();
+			MainMenuStrip = new MenuStrip();
 			fileToolStripMenuItem = new ToolStripMenuItem();
-			cleanFilesToolStripMenuItem = new ToolStripMenuItem();
 			openBurnDirectoryToolStripMenuItem = new ToolStripMenuItem();
-			menuStrip1.SuspendLayout();
+			cleanFilesToolStripMenuItem = new ToolStripMenuItem();
+			BurnDirFSWatcher = new FileSystemWatcher();
+			BurnFilesGrid = new DataGridView();
+			MainMenuStrip.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)BurnDirFSWatcher).BeginInit();
+			((System.ComponentModel.ISupportInitialize)BurnFilesGrid).BeginInit();
 			SuspendLayout();
 			// 
-			// menuStrip1
+			// MainMenuStrip
 			// 
-			menuStrip1.ImageScalingSize = new Size(24, 24);
-			menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem });
-			menuStrip1.Location = new Point(0, 0);
-			menuStrip1.Name = "menuStrip1";
-			menuStrip1.Size = new Size(800, 33);
-			menuStrip1.TabIndex = 0;
-			menuStrip1.Text = "menuStrip1";
+			MainMenuStrip.ImageScalingSize = new Size(24, 24);
+			MainMenuStrip.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem });
+			MainMenuStrip.Location = new Point(0, 0);
+			MainMenuStrip.Name = "MainMenuStrip";
+			MainMenuStrip.Size = new Size(1178, 33);
+			MainMenuStrip.TabIndex = 0;
+			MainMenuStrip.Text = "menuStrip1";
 			// 
 			// fileToolStripMenuItem
 			// 
@@ -52,13 +56,6 @@
 			fileToolStripMenuItem.Size = new Size(54, 29);
 			fileToolStripMenuItem.Text = "File";
 			// 
-			// cleanFilesToolStripMenuItem
-			// 
-			cleanFilesToolStripMenuItem.Name = "cleanFilesToolStripMenuItem";
-			cleanFilesToolStripMenuItem.Size = new Size(275, 34);
-			cleanFilesToolStripMenuItem.Text = "Clean files";
-			cleanFilesToolStripMenuItem.Click += cleanFilesToolStripMenuItem_Click;
-			// 
 			// openBurnDirectoryToolStripMenuItem
 			// 
 			openBurnDirectoryToolStripMenuItem.Name = "openBurnDirectoryToolStripMenuItem";
@@ -66,28 +63,55 @@
 			openBurnDirectoryToolStripMenuItem.Text = "Open burn directory";
 			openBurnDirectoryToolStripMenuItem.Click += openBurnDirectoryToolStripMenuItem_Click;
 			// 
+			// cleanFilesToolStripMenuItem
+			// 
+			cleanFilesToolStripMenuItem.Name = "cleanFilesToolStripMenuItem";
+			cleanFilesToolStripMenuItem.Size = new Size(275, 34);
+			cleanFilesToolStripMenuItem.Text = "Clean files";
+			cleanFilesToolStripMenuItem.Click += cleanFilesToolStripMenuItem_Click;
+			// 
+			// BurnDirFSWatcher
+			// 
+			BurnDirFSWatcher.EnableRaisingEvents = true;
+			BurnDirFSWatcher.SynchronizingObject = this;
+			BurnDirFSWatcher.Changed += BurnDirFSWatcher_Changed;
+			// 
+			// BurnFilesGrid
+			// 
+			BurnFilesGrid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+			BurnFilesGrid.Location = new Point(0, 36);
+			BurnFilesGrid.Name = "BurnFilesGrid";
+			BurnFilesGrid.ReadOnly = true;
+			BurnFilesGrid.RowHeadersWidth = 62;
+			BurnFilesGrid.Size = new Size(900, 600);
+			BurnFilesGrid.TabIndex = 1;
+			// 
 			// MainWindow
 			// 
 			AutoScaleDimensions = new SizeF(10F, 25F);
 			AutoScaleMode = AutoScaleMode.Font;
-			ClientSize = new Size(800, 450);
-			Controls.Add(menuStrip1);
+			ClientSize = new Size(1178, 644);
+			Controls.Add(BurnFilesGrid);
+			Controls.Add(MainMenuStrip);
 			FormBorderStyle = FormBorderStyle.FixedSingle;
-			MainMenuStrip = menuStrip1;
 			MaximizeBox = false;
 			Name = "MainWindow";
 			Text = "Super Burner";
-			menuStrip1.ResumeLayout(false);
-			menuStrip1.PerformLayout();
+			MainMenuStrip.ResumeLayout(false);
+			MainMenuStrip.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)BurnDirFSWatcher).EndInit();
+			((System.ComponentModel.ISupportInitialize)BurnFilesGrid).EndInit();
 			ResumeLayout(false);
 			PerformLayout();
 		}
 
 		#endregion
 
-		private MenuStrip menuStrip1;
+		private MenuStrip MainMenuStrip;
 		private ToolStripMenuItem fileToolStripMenuItem;
 		private ToolStripMenuItem cleanFilesToolStripMenuItem;
 		private ToolStripMenuItem openBurnDirectoryToolStripMenuItem;
+		private FileSystemWatcher BurnDirFSWatcher;
+		private DataGridView BurnFilesGrid;
 	}
 }
