@@ -31,6 +31,7 @@
 			menuStrip1 = new MenuStrip();
 			fileToolStripMenuItem = new ToolStripMenuItem();
 			cleanFilesToolStripMenuItem = new ToolStripMenuItem();
+			openBurnDirectoryToolStripMenuItem = new ToolStripMenuItem();
 			menuStrip1.SuspendLayout();
 			SuspendLayout();
 			// 
@@ -46,7 +47,7 @@
 			// 
 			// fileToolStripMenuItem
 			// 
-			fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { cleanFilesToolStripMenuItem });
+			fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { openBurnDirectoryToolStripMenuItem, cleanFilesToolStripMenuItem });
 			fileToolStripMenuItem.Name = "fileToolStripMenuItem";
 			fileToolStripMenuItem.Size = new Size(54, 29);
 			fileToolStripMenuItem.Text = "File";
@@ -54,9 +55,16 @@
 			// cleanFilesToolStripMenuItem
 			// 
 			cleanFilesToolStripMenuItem.Name = "cleanFilesToolStripMenuItem";
-			cleanFilesToolStripMenuItem.Size = new Size(270, 34);
+			cleanFilesToolStripMenuItem.Size = new Size(275, 34);
 			cleanFilesToolStripMenuItem.Text = "Clean files";
 			cleanFilesToolStripMenuItem.Click += cleanFilesToolStripMenuItem_Click;
+			// 
+			// openBurnDirectoryToolStripMenuItem
+			// 
+			openBurnDirectoryToolStripMenuItem.Name = "openBurnDirectoryToolStripMenuItem";
+			openBurnDirectoryToolStripMenuItem.Size = new Size(275, 34);
+			openBurnDirectoryToolStripMenuItem.Text = "Open burn directory";
+			openBurnDirectoryToolStripMenuItem.Click += openBurnDirectoryToolStripMenuItem_Click;
 			// 
 			// MainWindow
 			// 
@@ -80,5 +88,6 @@
 		private MenuStrip menuStrip1;
 		private ToolStripMenuItem fileToolStripMenuItem;
 		private ToolStripMenuItem cleanFilesToolStripMenuItem;
+		private ToolStripMenuItem openBurnDirectoryToolStripMenuItem;
 	}
 }
