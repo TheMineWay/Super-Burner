@@ -6,7 +6,14 @@ namespace Super_Burner
 	{
 		public MainWindow()
 		{
+			BurnerUnitDetector.onUnitConnected += onBurnerUnitConnected;
+			BurnerUnitDetector.onUnitDisconnected += onBurnerUnitDisconnected;
 			InitializeComponent();
+		}
+
+		~MainWindow() {
+			BurnerUnitDetector.onUnitConnected -= onBurnerUnitConnected;
+			BurnerUnitDetector.onUnitDisconnected -= onBurnerUnitDisconnected;
 		}
 
 		private void cleanFilesToolStripMenuItem_Click(object sender, EventArgs e)
@@ -22,6 +29,14 @@ namespace Super_Burner
 		{
 			string dir = Constants.BURN_DIR;
 			Process.Start("explorer.exe", dir);
+		}
+
+		private void onBurnerUnitConnected(string? driveName) {
+			MessageBox.Show($"Connected {driveName ?? "No name"}");
+		}
+
+		private void onBurnerUnitDisconnected(string? driveName) {
+			MessageBox.Show($"Disconnected {driveName ?? "No name"}");
 		}
 	}
 }
