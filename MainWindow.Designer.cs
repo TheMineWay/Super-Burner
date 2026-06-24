@@ -75,7 +75,11 @@
 			// 
 			BurnDirFSWatcher.EnableRaisingEvents = true;
 			BurnDirFSWatcher.SynchronizingObject = this;
+			BurnDirFSWatcher.NotifyFilter = NotifyFilters.FileName | NotifyFilters.DirectoryName | NotifyFilters.LastWrite;
+			BurnDirFSWatcher.Created += BurnDirFSWatcher_Changed;
+			BurnDirFSWatcher.Deleted += BurnDirFSWatcher_Changed;
 			BurnDirFSWatcher.Changed += BurnDirFSWatcher_Changed;
+			BurnDirFSWatcher.Renamed += BurnDirFSWatcher_Renamed;
 			// 
 			// BurnFilesGrid
 			// 

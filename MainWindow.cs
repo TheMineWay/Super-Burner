@@ -110,5 +110,10 @@ namespace Super_Burner
 		}
 
 		#endregion
+
+		private void BurnDirFSWatcher_Renamed(object sender, RenamedEventArgs e)
+		{
+			UpdateBurnFilesList();
+		}
 	}
 }
