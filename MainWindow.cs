@@ -109,11 +109,20 @@ namespace Super_Burner
 			DeleteSelectedFilesBtn.Enabled = hasSelection;
 		}
 
-		#endregion
-
 		private void BurnDirFSWatcher_Renamed(object sender, RenamedEventArgs e)
 		{
 			UpdateBurnFilesList();
 		}
+
+		#endregion
+
+		#region UI
+
+		private void BurnableUnitSelectorLabel_Click(object sender, EventArgs e)
+		{
+			BurnUnitSelector.Focus();
+		}
+
+		#endregion
 	}
 }

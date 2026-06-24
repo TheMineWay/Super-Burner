@@ -35,6 +35,8 @@
 			BurnDirFSWatcher = new FileSystemWatcher();
 			BurnFilesGrid = new DataGridView();
 			DeleteSelectedFilesBtn = new Button();
+			BurnUnitSelector = new ComboBox();
+			BurnableUnitSelectorLabel = new Label();
 			MainMenuStrip.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)BurnDirFSWatcher).BeginInit();
 			((System.ComponentModel.ISupportInitialize)BurnFilesGrid).BeginInit();
@@ -108,11 +110,35 @@
 			DeleteSelectedFilesBtn.UseVisualStyleBackColor = true;
 			DeleteSelectedFilesBtn.Click += DeleteSelectedFilesBtn_Click;
 			// 
+			// BurnUnitSelector
+			// 
+			BurnUnitSelector.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+			BurnUnitSelector.Enabled = false;
+			BurnUnitSelector.FormattingEnabled = true;
+			BurnUnitSelector.Location = new Point(598, 64);
+			BurnUnitSelector.Name = "BurnUnitSelector";
+			BurnUnitSelector.Size = new Size(168, 33);
+			BurnUnitSelector.TabIndex = 3;
+			// 
+			// BurnableUnitSelectorLabel
+			// 
+			BurnableUnitSelectorLabel.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+			BurnableUnitSelectorLabel.AutoSize = true;
+			BurnableUnitSelectorLabel.Location = new Point(598, 36);
+			BurnableUnitSelectorLabel.Name = "BurnableUnitSelectorLabel";
+			BurnableUnitSelectorLabel.Size = new Size(116, 25);
+			BurnableUnitSelectorLabel.TabIndex = 4;
+			BurnableUnitSelectorLabel.Text = "Burnable unit";
+			BurnableUnitSelectorLabel.Click += BurnableUnitSelectorLabel_Click;
+			// 
 			// MainWindow
 			// 
+			AccessibleName = "Super Burner";
 			AutoScaleDimensions = new SizeF(10F, 25F);
 			AutoScaleMode = AutoScaleMode.Font;
 			ClientSize = new Size(778, 544);
+			Controls.Add(BurnableUnitSelectorLabel);
+			Controls.Add(BurnUnitSelector);
 			Controls.Add(DeleteSelectedFilesBtn);
 			Controls.Add(BurnFilesGrid);
 			Controls.Add(MainMenuStrip);
@@ -138,5 +164,7 @@
 		private FileSystemWatcher BurnDirFSWatcher;
 		private DataGridView BurnFilesGrid;
 		private Button DeleteSelectedFilesBtn;
+		private ComboBox BurnUnitSelector;
+		private Label BurnableUnitSelectorLabel;
 	}
 }
