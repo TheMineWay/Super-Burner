@@ -1,4 +1,8 @@
 ﻿using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Management;
+using System;
 
 namespace Super_Burner
 {
@@ -16,6 +20,7 @@ namespace Super_Burner
 
 			// Initializate data
 			UpdateBurnFilesList();
+			UpdateOpticalDrivesList();
 		}
 
 		private void cleanFilesToolStripMenuItem_Click(object sender, EventArgs e)
@@ -95,7 +100,6 @@ namespace Super_Burner
 				catch (Exception ex)
 				{
 					failed++;
-					Debug.WriteLine($"Failed deleting {path}: {ex}");
 				}
 			}
 
@@ -114,15 +118,75 @@ namespace Super_Burner
 			UpdateBurnFilesList();
 		}
 
+		public void UpdateOpticalDrivesList()
+		{
+			if (InvokeRequired)
+			{
+				BeginInvoke(new Action(UpdateOpticalDrivesList));
+				return;
+			}
+
+			try
+			{
+				var drives = DriveInfo.GetDrives().Where(d => d.DriveType == DriveType.CDRom);
+				OpticalDrivesComboBox.Items.Clear();
+				foreach (var d in drives)
+				{
+					string name = d.Name.TrimEnd('\\');
+					string display = name;
+					try { if (d.IsReady && !string.IsNullOrEmpty(d.VolumeLabel)) display = $"{name} ({d.VolumeLabel})"; } catch { }
+					OpticalDrivesComboBox.Items.Add(display);
+				}
+				bool has = OpticalDrivesComboBox.Items.Count > 0;
+				OpticalDrivesComboBox.Enabled = has;
+				if (has)
+				{
+					if (OpticalDrivesComboBox.SelectedIndex < 0)
+						OpticalDrivesComboBox.SelectedIndex = 0;
+				}
+				else
+				{
+					OpticalDrivesComboBox.SelectedIndex = -1;
+				}
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.Message, "Unit error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+		}
+
+		protected override void WndProc(ref Message m)
+		{
+			const int WM_DEVICECHANGE = 0x0219;
+			const int DBT_DEVICEARRIVAL = 0x8000;
+			const int DBT_DEVICEREMOVECOMPLETE = 0x8004;
+
+			if (m.Msg == WM_DEVICECHANGE)
+			{
+				int wParam = m.WParam.ToInt32();
+				if (wParam == DBT_DEVICEARRIVAL || wParam == DBT_DEVICEREMOVECOMPLETE)
+				{
+					UpdateOpticalDrivesList();
+				}
+			}
+
+			base.WndProc(ref m);
+		}
+
 		#endregion
 
 		#region UI
 
 		private void BurnableUnitSelectorLabel_Click(object sender, EventArgs e)
 		{
-			BurnUnitSelector.Focus();
+			OpticalDrivesComboBox.Focus();
 		}
 
 		#endregion
+
+		private void MainWindow_Load(object sender, EventArgs e)
+		{
+
+		}
 	}
 }

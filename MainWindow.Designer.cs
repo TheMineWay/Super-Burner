@@ -35,8 +35,8 @@
 			BurnDirFSWatcher = new FileSystemWatcher();
 			BurnFilesGrid = new DataGridView();
 			DeleteSelectedFilesBtn = new Button();
-			BurnUnitSelector = new ComboBox();
 			BurnableUnitSelectorLabel = new Label();
+			OpticalDrivesComboBox = new ComboBox();
 			MainMenuStrip.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)BurnDirFSWatcher).BeginInit();
 			((System.ComponentModel.ISupportInitialize)BurnFilesGrid).BeginInit();
@@ -110,16 +110,6 @@
 			DeleteSelectedFilesBtn.UseVisualStyleBackColor = true;
 			DeleteSelectedFilesBtn.Click += DeleteSelectedFilesBtn_Click;
 			// 
-			// BurnUnitSelector
-			// 
-			BurnUnitSelector.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-			BurnUnitSelector.Enabled = false;
-			BurnUnitSelector.FormattingEnabled = true;
-			BurnUnitSelector.Location = new Point(598, 64);
-			BurnUnitSelector.Name = "BurnUnitSelector";
-			BurnUnitSelector.Size = new Size(168, 33);
-			BurnUnitSelector.TabIndex = 3;
-			// 
 			// BurnableUnitSelectorLabel
 			// 
 			BurnableUnitSelectorLabel.Anchor = AnchorStyles.Top | AnchorStyles.Right;
@@ -131,6 +121,17 @@
 			BurnableUnitSelectorLabel.Text = "Burnable unit";
 			BurnableUnitSelectorLabel.Click += BurnableUnitSelectorLabel_Click;
 			// 
+			// OpticalDrivesComboBox
+			// 
+			OpticalDrivesComboBox.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+			OpticalDrivesComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+			OpticalDrivesComboBox.Enabled = false;
+			OpticalDrivesComboBox.FormattingEnabled = true;
+			OpticalDrivesComboBox.Location = new Point(598, 64);
+			OpticalDrivesComboBox.Name = "OpticalDrivesComboBox";
+			OpticalDrivesComboBox.Size = new Size(168, 33);
+			OpticalDrivesComboBox.TabIndex = 5;
+			// 
 			// MainWindow
 			// 
 			AccessibleName = "Super Burner";
@@ -138,8 +139,8 @@
 			AutoScaleMode = AutoScaleMode.Font;
 			ClientSize = new Size(778, 544);
 			Controls.Add(BurnableUnitSelectorLabel);
-			Controls.Add(BurnUnitSelector);
 			Controls.Add(DeleteSelectedFilesBtn);
+			Controls.Add(OpticalDrivesComboBox);
 			Controls.Add(BurnFilesGrid);
 			Controls.Add(MainMenuStrip);
 			MaximizeBox = false;
@@ -147,6 +148,7 @@
 			MinimumSize = new Size(600, 400);
 			Name = "MainWindow";
 			Text = "Super Burner";
+			Load += MainWindow_Load;
 			MainMenuStrip.ResumeLayout(false);
 			MainMenuStrip.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)BurnDirFSWatcher).EndInit();
@@ -164,7 +166,7 @@
 		private FileSystemWatcher BurnDirFSWatcher;
 		private DataGridView BurnFilesGrid;
 		private Button DeleteSelectedFilesBtn;
-		private ComboBox BurnUnitSelector;
 		private Label BurnableUnitSelectorLabel;
+		private ComboBox OpticalDrivesComboBox;
 	}
 }
