@@ -46,7 +46,7 @@
 			MainMenuStrip.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem });
 			MainMenuStrip.Location = new Point(0, 0);
 			MainMenuStrip.Name = "MainMenuStrip";
-			MainMenuStrip.Size = new Size(1178, 33);
+			MainMenuStrip.Size = new Size(778, 33);
 			MainMenuStrip.TabIndex = 0;
 			MainMenuStrip.Text = "menuStrip1";
 			// 
@@ -75,16 +75,16 @@
 			// 
 			BurnDirFSWatcher.EnableRaisingEvents = true;
 			BurnDirFSWatcher.SynchronizingObject = this;
-			BurnDirFSWatcher.NotifyFilter = NotifyFilters.FileName | NotifyFilters.DirectoryName | NotifyFilters.LastWrite;
+			BurnDirFSWatcher.Changed += BurnDirFSWatcher_Changed;
 			BurnDirFSWatcher.Created += BurnDirFSWatcher_Changed;
 			BurnDirFSWatcher.Deleted += BurnDirFSWatcher_Changed;
-			BurnDirFSWatcher.Changed += BurnDirFSWatcher_Changed;
 			BurnDirFSWatcher.Renamed += BurnDirFSWatcher_Renamed;
 			// 
 			// BurnFilesGrid
 			// 
 			BurnFilesGrid.AllowUserToAddRows = false;
 			BurnFilesGrid.AllowUserToDeleteRows = false;
+			BurnFilesGrid.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
 			BurnFilesGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 			BurnFilesGrid.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
 			BurnFilesGrid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -92,14 +92,15 @@
 			BurnFilesGrid.Name = "BurnFilesGrid";
 			BurnFilesGrid.ReadOnly = true;
 			BurnFilesGrid.RowHeadersWidth = 62;
-			BurnFilesGrid.Size = new Size(888, 556);
+			BurnFilesGrid.Size = new Size(580, 456);
 			BurnFilesGrid.TabIndex = 1;
 			BurnFilesGrid.SelectionChanged += BurnFilesGrid_MultiSelectChanged;
 			// 
 			// DeleteSelectedFilesBtn
 			// 
+			DeleteSelectedFilesBtn.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
 			DeleteSelectedFilesBtn.Enabled = false;
-			DeleteSelectedFilesBtn.Location = new Point(12, 598);
+			DeleteSelectedFilesBtn.Location = new Point(12, 498);
 			DeleteSelectedFilesBtn.Name = "DeleteSelectedFilesBtn";
 			DeleteSelectedFilesBtn.Size = new Size(217, 34);
 			DeleteSelectedFilesBtn.TabIndex = 2;
@@ -111,12 +112,13 @@
 			// 
 			AutoScaleDimensions = new SizeF(10F, 25F);
 			AutoScaleMode = AutoScaleMode.Font;
-			ClientSize = new Size(1178, 644);
+			ClientSize = new Size(778, 544);
 			Controls.Add(DeleteSelectedFilesBtn);
 			Controls.Add(BurnFilesGrid);
 			Controls.Add(MainMenuStrip);
-			FormBorderStyle = FormBorderStyle.FixedSingle;
 			MaximizeBox = false;
+			MaximumSize = new Size(1000, 1200);
+			MinimumSize = new Size(600, 400);
 			Name = "MainWindow";
 			Text = "Super Burner";
 			MainMenuStrip.ResumeLayout(false);
