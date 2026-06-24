@@ -13,12 +13,7 @@ namespace Super_Burner
 			ApplicationConfiguration.Initialize();
 			FileEssentials.InitializateEssentials();
 
-			// Detect unit changes
-			var burnerDetector = new BurnerUnitDetector();
-			burnerDetector.Start();
-
 			Application.Run(new MainWindow());
-			burnerDetector.Stop();
 		}
 	}
 }
