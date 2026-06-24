@@ -1,13 +1,16 @@
 ﻿using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using System.Management;
-using System;
+using System.Runtime.InteropServices;
 
 namespace Super_Burner
 {
 	public partial class MainWindow : Form
 	{
+		[DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+		private static extern bool GetDiskFreeSpaceEx(string lpDirectoryName,
+			out ulong lpFreeBytesAvailable,
+			out ulong lpTotalNumberOfBytes,
+			out ulong lpTotalNumberOfFreeBytes);
 		public MainWindow()
 		{
 			InitializeComponent();
@@ -134,8 +137,100 @@ namespace Super_Burner
 				{
 					string name = d.Name.TrimEnd('\\');
 					string display = name;
-					try { if (d.IsReady && !string.IsNullOrEmpty(d.VolumeLabel)) display = $"{name} ({d.VolumeLabel})"; } catch { }
-					OpticalDrivesComboBox.Items.Add(display);
+					string diag = "";
+					try
+					{
+						bool isReady = false;
+						long sizeBytes = 0;
+						try { isReady = d.IsReady; } catch { isReady = false; }
+						if (isReady)
+						{
+							try { sizeBytes = d.TotalSize; } catch { sizeBytes = 0; }
+							string sizeStr = "";
+							if (sizeBytes > 0)
+							{
+								double mb = sizeBytes / (1024.0 * 1024.0);
+								if (mb >= 1024)
+									sizeStr = $", {Math.Round(mb / 1024.0, 2)} GB";
+								else
+									sizeStr = $", {Math.Ceiling(mb)} MB";
+							}
+							if (!string.IsNullOrEmpty(d.VolumeLabel))
+								display = $"{name} ({d.VolumeLabel}{sizeStr})";
+							else
+								display = $"{name} ({sizeStr.TrimStart(',', ' ')})";
+						}
+						// If the drive is not ready or no size available, try WMI fallback to detect media/size
+						if (!isReady || sizeBytes == 0)
+						{
+							try
+							{
+								string deviceId = name; // e.g. "D:"
+														// Query logical disk for size/volume
+								using (var searcher = new ManagementObjectSearcher($"SELECT Size, VolumeName FROM Win32_LogicalDisk WHERE DeviceID = '{deviceId}'"))
+								{
+									foreach (ManagementObject mo in searcher.Get())
+									{
+										var sizeObj = mo["Size"];
+										var volObj = mo["VolumeName"];
+										long wmiSize = 0;
+										if (sizeObj != null && long.TryParse(sizeObj.ToString(), out wmiSize))
+										{
+											double mb = wmiSize / (1024.0 * 1024.0);
+											string sizeStr = mb >= 1024 ? $", {Math.Round(mb / 1024.0, 2)} GB" : $", {Math.Ceiling(mb)} MB";
+											string vol = volObj != null ? volObj.ToString() : string.Empty;
+											if (!string.IsNullOrEmpty(vol)) display = $"{name} ({vol}{sizeStr})";
+											else display = $"{name} ({sizeStr.TrimStart(',', ' ')})";
+											break;
+										}
+									}
+								}
+								// If still no size, try GetDiskFreeSpaceEx (may work even if DriveInfo.IsReady is false)
+								if (display == name)
+								{
+									try
+									{
+										string path = name + "\\"; // e.g. "D:\\"
+										if (GetDiskFreeSpaceEx(path, out ulong freeAvail, out ulong totalBytes, out ulong totalFree))
+										{
+											if (totalBytes > 0)
+											{
+												double mb = totalBytes / (1024.0 * 1024.0);
+												string sizeStr = mb >= 1024 ? $", {Math.Round(mb / 1024.0, 2)} GB" : $", {Math.Ceiling(mb)} MB";
+												display = $"{name} (Media present{sizeStr})";
+											}
+										}
+									}
+									catch { }
+
+									// If still unchanged, check CDROM drive for MediaLoaded
+									if (display == name)
+									{
+										using (var searcher2 = new ManagementObjectSearcher($"SELECT Drive, MediaLoaded FROM Win32_CDROMDrive WHERE Drive = '{deviceId}'"))
+										{
+											foreach (ManagementObject mo2 in searcher2.Get())
+											{
+												var mediaLoadedObj = mo2["MediaLoaded"];
+												bool mediaLoaded = false;
+												if (mediaLoadedObj != null && bool.TryParse(mediaLoadedObj.ToString(), out mediaLoaded) && mediaLoaded)
+												{
+													display = $"{name} (Media present)";
+													break;
+												}
+											}
+										}
+									}
+								}
+							}
+							catch { }
+						}
+					}
+					catch (Exception ex)
+					{
+						// Keep display but show minimal diagnostic
+						diag = $"[Err:{ex.GetType().Name}]";
+					}
+					OpticalDrivesComboBox.Items.Add($"{display} {diag}");
 				}
 				bool has = OpticalDrivesComboBox.Items.Count > 0;
 				OpticalDrivesComboBox.Enabled = has;
@@ -187,6 +282,11 @@ namespace Super_Burner
 		private void MainWindow_Load(object sender, EventArgs e)
 		{
 
+		}
+
+		private void ReloadDrivesListBtn_Click(object sender, EventArgs e)
+		{
+			UpdateOpticalDrivesList();
 		}
 	}
 }
