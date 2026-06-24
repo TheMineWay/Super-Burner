@@ -34,20 +34,32 @@ namespace Super_Burner
 			Process.Start("explorer.exe", dir);
 		}
 
-		#region FS Watcher
+		#region Files
 
 		private void BurnDirFSWatcher_Changed(object sender, FileSystemEventArgs e)
 		{
 			UpdateBurnFilesList();
 		}
 
-		public void UpdateBurnFilesList() {
+		public void UpdateBurnFilesList()
+		{
 			var burnableFiles = BurnFilesUtils.ListBurnableFiles();
 			BurnFilesGrid.Rows.Clear();
-			
-			foreach(var file in burnableFiles) {
-				BurnFilesGrid.Rows.Add(file.name, file.size, file.extension);
+
+			foreach (var file in burnableFiles)
+			{
+				BurnFilesGrid.Rows.Add(file.name, $"{(file.size < 1 ? "<" : "")}{Math.Ceiling(file.size)}MB", file.extension);
 			}
+		}
+
+		private void DeleteSelectedFilesBtn_Click(object sender, EventArgs e)
+		{
+			
+		}
+
+		private void BurnFilesGrid_MultiSelectChanged(object sender, EventArgs e)
+		{
+			
 		}
 
 		#endregion

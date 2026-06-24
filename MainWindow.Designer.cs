@@ -34,6 +34,7 @@
 			cleanFilesToolStripMenuItem = new ToolStripMenuItem();
 			BurnDirFSWatcher = new FileSystemWatcher();
 			BurnFilesGrid = new DataGridView();
+			DeleteSelectedFilesBtn = new Button();
 			MainMenuStrip.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)BurnDirFSWatcher).BeginInit();
 			((System.ComponentModel.ISupportInitialize)BurnFilesGrid).BeginInit();
@@ -78,19 +79,35 @@
 			// 
 			// BurnFilesGrid
 			// 
+			BurnFilesGrid.AllowUserToAddRows = false;
+			BurnFilesGrid.AllowUserToDeleteRows = false;
+			BurnFilesGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+			BurnFilesGrid.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
 			BurnFilesGrid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			BurnFilesGrid.Location = new Point(0, 36);
+			BurnFilesGrid.Location = new Point(12, 36);
 			BurnFilesGrid.Name = "BurnFilesGrid";
 			BurnFilesGrid.ReadOnly = true;
 			BurnFilesGrid.RowHeadersWidth = 62;
-			BurnFilesGrid.Size = new Size(900, 600);
+			BurnFilesGrid.Size = new Size(888, 556);
 			BurnFilesGrid.TabIndex = 1;
+			BurnFilesGrid.MultiSelectChanged += BurnFilesGrid_MultiSelectChanged;
+			// 
+			// DeleteSelectedFilesBtn
+			// 
+			DeleteSelectedFilesBtn.Location = new Point(12, 598);
+			DeleteSelectedFilesBtn.Name = "DeleteSelectedFilesBtn";
+			DeleteSelectedFilesBtn.Size = new Size(217, 34);
+			DeleteSelectedFilesBtn.TabIndex = 2;
+			DeleteSelectedFilesBtn.Text = "Delete selected files";
+			DeleteSelectedFilesBtn.UseVisualStyleBackColor = true;
+			DeleteSelectedFilesBtn.Click += DeleteSelectedFilesBtn_Click;
 			// 
 			// MainWindow
 			// 
 			AutoScaleDimensions = new SizeF(10F, 25F);
 			AutoScaleMode = AutoScaleMode.Font;
 			ClientSize = new Size(1178, 644);
+			Controls.Add(DeleteSelectedFilesBtn);
 			Controls.Add(BurnFilesGrid);
 			Controls.Add(MainMenuStrip);
 			FormBorderStyle = FormBorderStyle.FixedSingle;
@@ -113,5 +130,6 @@
 		private ToolStripMenuItem openBurnDirectoryToolStripMenuItem;
 		private FileSystemWatcher BurnDirFSWatcher;
 		private DataGridView BurnFilesGrid;
+		private Button DeleteSelectedFilesBtn;
 	}
 }
