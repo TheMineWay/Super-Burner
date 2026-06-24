@@ -94,6 +94,7 @@
 			// 
 			// DeleteSelectedFilesBtn
 			// 
+			DeleteSelectedFilesBtn.Enabled = false;
 			DeleteSelectedFilesBtn.Location = new Point(12, 598);
 			DeleteSelectedFilesBtn.Name = "DeleteSelectedFilesBtn";
 			DeleteSelectedFilesBtn.Size = new Size(217, 34);

@@ -54,12 +54,59 @@ namespace Super_Burner
 
 		private void DeleteSelectedFilesBtn_Click(object sender, EventArgs e)
 		{
-			
+			// Gather selected rows (support both full-row and cell selection modes)
+			var selectedRowIndexes = BurnFilesGrid.SelectedRows.Cast<DataGridViewRow>().Select(r => r.Index).ToList();
+			if (selectedRowIndexes.Count == 0)
+			{
+				selectedRowIndexes = BurnFilesGrid.SelectedCells.Cast<DataGridViewCell>().Select(c => c.RowIndex).Distinct().ToList();
+			}
+
+			if (selectedRowIndexes.Count == 0)
+			{
+				MessageBox.Show("No files selected.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				return;
+			}
+
+			var confirm = MessageBox.Show($"Delete {selectedRowIndexes.Count} selected file(s)? This action cannot be undone.", "Confirm delete", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+			if (confirm != DialogResult.Yes)
+				return;
+
+			int deleted = 0;
+			int failed = 0;
+			foreach (int rowIndex in selectedRowIndexes.OrderByDescending(i => i))
+			{
+				if (rowIndex < 0 || rowIndex >= BurnFilesGrid.Rows.Count)
+					continue;
+
+				var row = BurnFilesGrid.Rows[rowIndex];
+				string fileName = row.Cells[0].Value?.ToString() ?? string.Empty;
+				if (string.IsNullOrWhiteSpace(fileName))
+					continue;
+
+				string path = Path.Combine(Constants.BURN_DIR, fileName);
+				try
+				{
+					if (File.Exists(path))
+					{
+						File.Delete(path);
+						deleted++;
+					}
+				}
+				catch (Exception ex)
+				{
+					failed++;
+					Debug.WriteLine($"Failed deleting {path}: {ex}");
+				}
+			}
+
+			UpdateBurnFilesList();
+			MessageBox.Show($"Deleted: {deleted}. Failed: {failed}.", "Delete finished", MessageBoxButtons.OK, MessageBoxIcon.Information);
 		}
 
 		private void BurnFilesGrid_MultiSelectChanged(object sender, EventArgs e)
 		{
-			
+			bool hasSelection = BurnFilesGrid.SelectedRows.Count > 0 || BurnFilesGrid.SelectedCells.Count > 0;
+			DeleteSelectedFilesBtn.Enabled = hasSelection;
 		}
 
 		#endregion
