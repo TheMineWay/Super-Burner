@@ -90,7 +90,7 @@
 			BurnFilesGrid.RowHeadersWidth = 62;
 			BurnFilesGrid.Size = new Size(888, 556);
 			BurnFilesGrid.TabIndex = 1;
-			BurnFilesGrid.MultiSelectChanged += BurnFilesGrid_MultiSelectChanged;
+			BurnFilesGrid.SelectionChanged += BurnFilesGrid_MultiSelectChanged;
 			// 
 			// DeleteSelectedFilesBtn
 			// 
